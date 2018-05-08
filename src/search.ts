@@ -1,7 +1,9 @@
 let unity_search 		= "http://docs.unity3d.com/ScriptReference/30_search.html";
-let unity_search_url 	= unity_search + "?q=";
+let unity_search_url 	= "?q=";
 let msdn_search 		= "https://social.msdn.microsoft.com/search/";
-let msdn_search_url 	= msdn_search + "?query=";
+let msdn_search_url 	= "?query=";
+
+import * as vscode from 'vscode';
 
 //Open a URL using the npm module "opn"
 let opn = require('opn');
@@ -11,17 +13,27 @@ export function openURL(search_base?: string, s?: string) {
 		var search_blank_url, search_url;
 
 		if (search_base === "unity") {
-			search_blank_url = unity_search;
-			search_url = unity_search_url;
+			var settings: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('unity-tools');
+			var localPath = settings.get('localDocumentationPath',"");
+			
+			if (localPath === "") {
+				search_blank_url = unity_search;
+			}
+			else
+			{
+				search_blank_url = "file:///"+localPath+"30_search.html";
+			}
+
+			search_url = search_blank_url+unity_search_url;
 		}
 		else if (search_base === "msdn") {
 			search_blank_url = msdn_search;
-			search_url = msdn_search_url;
+			search_url = search_blank_url+msdn_search_url;
 		}
 
 		if (!s) { s = search_blank_url; }
 		else { s = search_url + s; }
-		
+
 		opn(s);
     }
 	return true;
