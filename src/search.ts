@@ -11,6 +11,8 @@ let opn = require('opn');
 export function openURL(search_base?: string, s?: string) {
     if (search_base === "open") { opn(s); } else {
 		var search_blank_url, search_url;
+		
+		var appPath = "";
 
 		if (search_base === "unity") {
 			var settings: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration('unity-tools');
@@ -22,8 +24,9 @@ export function openURL(search_base?: string, s?: string) {
 			else
 			{
 				search_blank_url = "file:///"+localPath+"30_search.html";
+				
+				appPath = settings.get('localDocumentationViewer',"firefox");
 			}
-
 			search_url = search_blank_url+unity_search_url;
 		}
 		else if (search_base === "msdn") {
@@ -34,7 +37,11 @@ export function openURL(search_base?: string, s?: string) {
 		if (!s) { s = search_blank_url; }
 		else { s = search_url + s; }
 
-		opn(s);
+		if (appPath == "")
+			opn(s);
+		else
+			opn(s, {app: appPath});
+		
     }
 	return true;
 }
