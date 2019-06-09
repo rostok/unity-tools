@@ -1,9 +1,11 @@
+import * as vscode from 'vscode';
+
 let unity_search = "http://docs.unity3d.com/ScriptReference/30_search.html";
+var settings = vscode.workspace.getConfiguration('unity-tools');
+if (settings.get('altSearchDocsUrl','') != '') unity_search = settings.get('altSearchDocsUrl','');
 let unity_search_url = unity_search + "?q=";
 let msft_search = "https://docs.microsoft.com/";
 let msft_search_url = msft_search + "en-us/search/index?search=";
-
-import * as vscode from 'vscode';
 
 export async function openURL(search_base?: string, s?: string) {
 	if (search_base === "open") { await vscode.env.openExternal(vscode.Uri.parse(s as string)); } else {
