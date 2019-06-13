@@ -109,7 +109,7 @@
 				"unity-tools.altSearchBrowser": {
 					"type": "string",
 					"default": "",
-					"description": "enter full file path for offline search browser"
+					"description": "enter full file path for offline search browser with quotes if path includes spaces"
 				},
 				"unity-tools.enableRightClickSearch": {
 					"type": "boolean",
